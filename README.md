@@ -21,7 +21,7 @@ npm i
 
 This will download and install dependencies from the remote _npm_ registry.
 
-# Running the program
+## Running the program
 
 To run the code, navigate to the directory that contains the package.json file, and run the command:
 
