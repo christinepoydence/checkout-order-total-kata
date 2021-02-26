@@ -18,13 +18,13 @@ const scannableItemSchema = {
   };
 
   const getScannableItemByName = (name) => {
-    return scannableItems.filter(item => item.itemName === name);
+    return scannableItems.find(item => item.itemName === name);
   };
 
 const addScannableItemToSystem = (item) => {
     if(validScannableItem(item)){
         const existingItem = getScannableItemByName(item.itemName);
-        if(existingItem.length > 0){
+        if(!!existingItem){
             throw new Error(`${item.itemName} already exists in the scannable items list. Please modify the item instead of re-adding it.`);
         }
         scannableItems.push(item);
@@ -45,5 +45,6 @@ const modifyScannableItemInSystem = (item) => {
 module.exports = {
     scannableItems,
     addScannableItemToSystem,
-    modifyScannableItemInSystem
+    modifyScannableItemInSystem,
+    getScannableItemByName
 }
