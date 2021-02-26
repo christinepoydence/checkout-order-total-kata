@@ -31,7 +31,16 @@ const addScannableItemToSystem = (item) => {
     }
 };
 
+const modifyScannableItemInSystem = (item) => {
+    if(validScannableItem(item)){
+        const index = scannableItems.findIndex((existingItem => existingItem.itemName === item.itemName));
+        scannableItems[index].price = item.price;
+        scannableItems[index].unitType = item.unitType;
+    }
+}
+
 module.exports = {
     scannableItems,
-    addScannableItemToSystem
+    addScannableItemToSystem,
+    modifyScannableItemInSystem
 }

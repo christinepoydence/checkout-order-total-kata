@@ -1,6 +1,8 @@
 
 const {
-    addScannableItemToSystem, scannableItems
+    addScannableItemToSystem, 
+    scannableItems,
+    modifyScannableItemInSystem
 } = require('./itemEntryService');
 
 describe('addScannableItemToSystem', () => {
@@ -45,4 +47,18 @@ describe('addScannableItemToSystem', () => {
         expect(() => { addScannableItemToSystem(item) }
         ).toThrow(Error(`${item.itemName} already exists in the scannable items list. Please modify the item instead of re-adding it.`));
     });
+});
+
+describe('modifyScannableItemInSystem', () => {
+
+    test('when an existing item is passed to modifyScannableItemInSystem, the item is updated with a new price and unit type', () => {
+        const initialItem = {itemName: "apple", unitType: 'pounds', price: 2.04};
+        addScannableItemToSystem(initialItem);
+        expect(scannableItems).toContain(initialItem);
+        const modifiedItem = {itemName: "apple", unitType: 'gallons', price: 2.07};
+        modifyScannableItemInSystem(modifiedItem);
+        expect(scannableItems).toContainEqual(modifiedItem);
+        expect(scannableItems).not.toContainEqual({itemName: "apple", unitType: 'pounds', price: 2.04});
+    });
+
 });
