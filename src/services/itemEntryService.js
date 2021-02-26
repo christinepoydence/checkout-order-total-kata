@@ -34,10 +34,13 @@ const addScannableItemToSystem = (item) => {
 const modifyScannableItemInSystem = (item) => {
     if(validScannableItem(item)){
         const index = scannableItems.findIndex((existingItem => existingItem.itemName === item.itemName));
+        if(index === -1){
+            throw new Error(`${item.itemName} is not in the scannable items list. Please add a new item instead of modifying.`)
+        }
         scannableItems[index].price = item.price;
         scannableItems[index].unitType = item.unitType;
     }
-}
+};
 
 module.exports = {
     scannableItems,

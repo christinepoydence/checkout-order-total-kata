@@ -60,5 +60,11 @@ describe('modifyScannableItemInSystem', () => {
         expect(scannableItems).toContainEqual(modifiedItem);
         expect(scannableItems).not.toContainEqual({itemName: "apple", unitType: 'pounds', price: 2.04});
     });
+    
+    test('when a new item is passed to modifyScannableItemInSystem, an error should be thrown', () => {
+        const item = {itemName: "cereal", unitType: 'pounds', price: 2.04};
+        expect(() => { modifyScannableItemInSystem(item) }
+        ).toThrow(Error(`${item.itemName} is not in the scannable items list. Please add a new item instead of modifying.`));
+    });
 
 });
