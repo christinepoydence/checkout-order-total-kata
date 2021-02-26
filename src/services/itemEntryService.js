@@ -1,4 +1,4 @@
-const scannableItems = {};
+const scannableItems = [];
 
 const scannableItemSchema = {
     itemName: value => typeof value === 'string',
@@ -15,11 +15,19 @@ const scannableItemSchema = {
       }
     });
     return true;
-  }
+  };
+
+  const getScannableItemByName = (name) => {
+    return scannableItems.filter(item => item.itemName === name);
+  };
 
 const addScannableItemToSystem = (item) => {
     if(validScannableItem(item)){
-        Object.assign(scannableItems, item);
+        const existingItem = getScannableItemByName(item.itemName);
+        if(existingItem.length > 0){
+            throw new Error(`${item.itemName} already exists in the scannable items list. Please modify the item instead of re-adding it.`);
+        }
+        scannableItems.push(item);
     }
 };
 
