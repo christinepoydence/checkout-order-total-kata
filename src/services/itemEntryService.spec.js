@@ -67,4 +67,22 @@ describe('modifyScannableItemInSystem', () => {
         ).toThrow(Error(`${item.itemName} is not in the scannable items list. Please add a new item instead of modifying.`));
     });
 
+    test('when an item is passed to modifyScannableItemInSystem, it must contain a price', () => {
+        const item = {itemName: "soup", unitType: 'unit'};
+        expect(() => { modifyScannableItemInSystem(item) }
+            ).toThrow(Error('Scannable items must contain a valid price'));
+    });
+
+    test('when an item is passed tomodifyScannableItemInSystem, it must contain an item name', () => {
+        const item = {price: 1.89, unitType: 'pounds'}
+        expect(() => { modifyScannableItemInSystem(item) }
+            ).toThrow(Error('Scannable items must contain a valid itemName'));
+    });
+
+    test('when an item is passed to modifyScannableItemInSystem, it must contain a valid unit type', () => {
+        const item = {itemName: 'bananas', price: 2.38}
+        expect(() => { modifyScannableItemInSystem(item) }
+            ).toThrow(Error('Scannable items must contain a valid unitType'));
+    });
+
 });
