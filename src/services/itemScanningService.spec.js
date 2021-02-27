@@ -1,7 +1,8 @@
 const { getScannableItemByName } = require('./itemEntryService');
 const {
     scannedItems,
-    addItemToOrder
+    addItemToOrder,
+    orderInformation
 } = require('./itemScanningService');
 
 
@@ -11,6 +12,8 @@ jest.mock('./itemEntryService');
 describe('addItemToOrder', () => {
 
     beforeEach(() => {
+        orderInformation.items = [];
+        orderInformation.orderTotal = 0;
         scannableItems = [{itemName: 'soup', unitType: 'unit', price: 1.27}];
         getScannableItemByName.mockReturnValue({itemName: 'soup', unitType: 'unit', price: 1.27});
       });
@@ -24,7 +27,11 @@ describe('addItemToOrder', () => {
         getScannableItemByName.mockReturnValue(undefined);
         expect(() => { addItemToOrder('orange juice') }
             ).toThrow(Error(`orange juice is not a valid item in this POS system.`));
-    
+    });
+
+    test('when a valid item with a unit type of unit is passed to addItemToOrder, the price of that item is added to the total', () => {
+        addItemToOrder('soup');
+        expect(orderInformation.orderTotal).toEqual(1.27);
     });
 
 });
