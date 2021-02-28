@@ -1,8 +1,8 @@
 const { getScannableItemByName } = require('./itemEntryService');
 const {
-    scannedItems,
     addItemToOrder,
-    orderInformation
+    orderInformation,
+    removeItemFromOrder
 } = require('./itemScanningService');
 
 
@@ -35,7 +35,7 @@ describe('addItemToOrder', () => {
                 price: 1.27
             });
         addItemToOrder('soup');
-        expect(scannedItems).toContain('soup');
+        expect(orderInformation.items).toContain('soup');
     });
 
     test('if an item that is not scannable is passed to addItemToOrder, an error is thrown', () => {
@@ -66,4 +66,34 @@ describe('addItemToOrder', () => {
         expect(orderInformation.orderTotal).toEqual(3.92);
     });
 
+});
+
+describe('removeItemFromOrder', () => {
+
+    beforeEach(() => {
+        getScannableItemByName.mockReset();
+        orderInformation.items = ['soup','bananas'];
+        orderInformation.orderTotal = 0;
+        scannableItems = [ {
+            itemName: 'soup', 
+            unitType: 'unit', 
+            price: 1.27
+        },
+        {
+            itemName: 'bananas', 
+            unitType: 'pounds', 
+            price: 0.98 
+        }];
+      });
+
+    test('when a valid item is passed to removeItemFromOrder, it is removed from the list of items on the order', () => {
+        getScannableItemByName.mockReturnValue(
+            {
+                itemName: 'soup', 
+                unitType: 'unit', 
+                price: 1.27
+            });
+        removeItemFromOrder('soup');
+        expect(orderInformation.items).not.toContain('soup');
+    });
 });
