@@ -8,27 +8,36 @@ const orderInformation = {
     orderTotal: 0
 };
 
-const addItemToOrder = (itemName, unitsOfWeight) => {
+const addItemToOrder = (itemName, units=1) => {
     const itemInformation = getScannableItemByName(itemName);
     if(!itemInformation){
         throw new Error(`${itemName} is not a valid item in this POS system.`);
     }
-    orderInformation.items.push(itemName);
-    if(itemInformation.unitType === 'unit'){
-        orderInformation.orderTotal += itemInformation.price;
-    }else{
-        orderInformation.orderTotal += itemInformation.price * unitsOfWeight;
-    }
+    orderInformation.items.push(
+        {
+            itemName: itemName, 
+            units: units, 
+            price: itemInformation.price
+        });
+    orderInformation.orderTotal += itemInformation.price * units;
 };
 
-const removeItemFromOrder = (itemName) => {
+const removeItemFromOrder = (itemName, units=1) => {
     const itemInformation = getScannableItemByName(itemName);
     if(!itemInformation){
         throw new Error(`${itemName} is not a valid item in this POS system.`);
     }
-    if(orderInformation.items.includes(itemName)){
-        orderInformation.items = orderInformation.items.filter(item => item !== itemName);
-        orderInformation.orderTotal = orderInformation.orderTotal - itemInformation.price;
+    if(orderInformation.items.find(item => item.itemName === itemName)){
+        const item = orderInformation.items.find(item => item.itemName === itemName);
+        if(item.units < units){
+            throw new Error(`You have only ordered ${item.units} of this item. You cannot delete ${units} units.`);
+        }else if(item.units > units){
+            item.units = item.units - units;
+            orderInformation.orderTotal = orderInformation.orderTotal - units*itemInformation.price;
+        }else{
+            orderInformation.items = orderInformation.items.filter(item => item.itemName !== itemName);
+            orderInformation.orderTotal = orderInformation.orderTotal - units*itemInformation.price;
+        }        
     }
 };
 
