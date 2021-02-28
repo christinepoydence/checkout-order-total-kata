@@ -28,6 +28,7 @@ const removeItemFromOrder = (itemName) => {
     }
     if(orderInformation.items.includes(itemName)){
         orderInformation.items = orderInformation.items.filter(item => item !== itemName);
+        orderInformation.orderTotal = orderInformation.orderTotal - itemInformation.price;
     }
 };
 

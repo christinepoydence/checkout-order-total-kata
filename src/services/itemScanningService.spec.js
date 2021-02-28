@@ -73,7 +73,7 @@ describe('removeItemFromOrder', () => {
     beforeEach(() => {
         getScannableItemByName.mockReset();
         orderInformation.items = ['soup','bananas'];
-        orderInformation.orderTotal = 0;
+        orderInformation.orderTotal = 2.25;
         scannableItems = [ {
             itemName: 'soup', 
             unitType: 'unit', 
@@ -95,5 +95,15 @@ describe('removeItemFromOrder', () => {
             });
         removeItemFromOrder('soup');
         expect(orderInformation.items).not.toContain('soup');
+    });
+    test('when a valid item is passed to removeItemFromOrder, the order total is reduced by the cost of that item', () => {
+        getScannableItemByName.mockReturnValue(
+            {
+                itemName: 'soup', 
+                unitType: 'unit', 
+                price: 1.27
+            });
+        removeItemFromOrder('soup');
+        expect(orderInformation.orderTotal).toEqual(.98);
     });
 });
