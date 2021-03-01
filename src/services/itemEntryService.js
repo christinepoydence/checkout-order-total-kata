@@ -7,7 +7,7 @@ const scannableItemSchema = {
   };
 
 
-  const validScannableItem = (item) => {
+  const validateScannableItem = (item) => {
     const entries = Object.entries(scannableItemSchema);
     entries.map(([key, validate]) => {
       if(!validate(item[key])){
@@ -22,24 +22,24 @@ const scannableItemSchema = {
   };
 
 const addScannableItemToSystem = (item) => {
-    if(validScannableItem(item)){
+    validateScannableItem(item);
         const existingItem = getScannableItemByName(item.itemName);
         if(!!existingItem){
             throw new Error(`${item.itemName} already exists in the scannable items list. Please modify the item instead of re-adding it.`);
         }
         scannableItems.push(item);
-    }
+    
 };
 
 const modifyScannableItemInSystem = (item) => {
-    if(validScannableItem(item)){
+    validateScannableItem(item);
         const index = scannableItems.findIndex((existingItem => existingItem.itemName === item.itemName));
         if(index === -1){
             throw new Error(`${item.itemName} is not in the scannable items list. Please add a new item instead of modifying.`)
         }
         scannableItems[index].price = item.price;
         scannableItems[index].unitType = item.unitType;
-    }
+    
 };
 
 module.exports = {

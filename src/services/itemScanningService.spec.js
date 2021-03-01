@@ -38,6 +38,39 @@ describe('addItemToOrder', () => {
         expect(orderInformation.items).toEqual([{itemName: 'soup', price: 1.27, units:1}]);
     });
 
+    test('when a valid item is passed to addItemToOrder and it is already on the order, the units of the item on the order are incremented', () => {
+        getScannableItemByName.mockReturnValue(
+            {
+                itemName: 'soup', 
+                unitType: 'unit', 
+                price: 1.27
+            });
+        addItemToOrder('soup');
+        addItemToOrder('soup');
+        expect(orderInformation.items).toEqual([{itemName: 'soup', price: 1.27, units:2}]);
+    });
+
+    test('when a valid item is passed to addItemToOrder and it is already on the order, an error should be thrown if the price has changed', () => {
+        getScannableItemByName.mockReset();
+        getScannableItemByName.mockReturnValueOnce(
+            {
+                itemName: 'soup', 
+                unitType: 'unit', 
+                price: 1.27
+            });
+        addItemToOrder('soup');
+        getScannableItemByName.mockReset();
+        getScannableItemByName.mockReturnValueOnce(
+            {
+                itemName: 'soup', 
+                unitType: 'unit', 
+                price: 1.45
+            });
+            expect(() => { addItemToOrder('soup') }
+            ).toThrow(Error(`The price of the item has changed since the beginning of your order. Please remove all soup from your order and rescan them.`));
+    });
+
+
     test('if an item that is not scannable is passed to addItemToOrder, an error is thrown', () => {
         getScannableItemByName.mockReturnValue(undefined);
         expect(() => { addItemToOrder('orange juice') }
@@ -121,5 +154,45 @@ describe('removeItemFromOrder', () => {
             });
         removeItemFromOrder('bananas', 2);
         expect(orderInformation.orderTotal).toEqual(0.29000000000000004);
+    });
+
+    test('if a clerk tries to remove more items than were scanned, an error is thrown', () => {
+        orderInformation.items =[{itemName: 'soup', price: 1.27, units:1},{itemName: 'bananas', price: .98, units:3}];
+        orderInformation.orderTotal = 2.25;
+        getScannableItemByName.mockReturnValue(
+            {
+                itemName: 'bananas', 
+                unitType: 'pounds', 
+                price: .98
+            });
+        
+        expect(() => { removeItemFromOrder('bananas', 4); }
+            ).toThrow(Error( "You have only ordered 3 of this item. You cannot delete 4 units."));
+    });
+
+    test('if an item that is not scannable is passed to removeItemFromOrder, an error is thrown', () => {
+        orderInformation.items =[{itemName: 'soup', price: 1.27, units:1},{itemName: 'bananas', price: .98, units:3}];
+        orderInformation.orderTotal = 2.25;
+        getScannableItemByName.mockReturnValue(
+            {
+                itemName: 'bananas', 
+                unitType: 'pounds', 
+                price: .98
+            });
+        expect(() => {removeItemFromOrder('orange juice') }
+            ).toThrow(Error(`orange juice is not on the order.`));
+    });
+
+    test('if an item that is not scannable is passed to removeItemFromOrder, an error is thrown', () => {
+        orderInformation.items =[{itemName: 'soup', price: 1.27, units:1},{itemName: 'bananas', price: .98, units:3}];
+        orderInformation.orderTotal = 2.25;
+        getScannableItemByName.mockReturnValue(
+            {
+                itemName: 'bananas', 
+                unitType: 'pounds', 
+                price: .98
+            });
+        expect(() => {removeItemFromOrder('orange juice') }
+            ).toThrow(Error(`orange juice is not on the order.`));
     });
 });
