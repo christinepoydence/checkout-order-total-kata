@@ -13,13 +13,13 @@ test('instance of point of sale is used if Point of Sale is constructed twice', 
 
 test('addScannableItem adds an item to pos.scannableItems', () => {
     const pos = new PointOfSale();
-    pos.addScannableItem({itemName: 'item'})
+    pos.addScannableItem({itemName: 'item'});
     expect(pos.scannableItems).toContainEqual({itemName: 'item'});
 });
 
 test('retrieveScannableItemByName returns an item with the name that is passed from scannable items', () => {
     const pos = new PointOfSale();
-    const retrievedItem = pos.retrieveScannableItemByName('item')
+    const retrievedItem = pos.retrieveScannableItemByName('item');
     expect(retrievedItem).toEqual({itemName: 'item'});
 });
 

@@ -5,7 +5,7 @@ test('OrderedItem can be constructed', () => {
         itemName: 'kiwi',
         units: 4,
         price: 1.42
-    }
+    };
     const orderedItem = new OrderedItem(item);
     expect(orderedItem.itemName).toBe('kiwi');
     expect(orderedItem.units).toBe(4);

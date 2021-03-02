@@ -5,7 +5,7 @@ test('ScannableItem can be constructed', () => {
         itemName: 'kiwi',
         unitType: 'ounces',
         price: 1.42
-    }
+    };
     const scannableItem = new ScannableItem(item);
     expect(scannableItem.itemName).toBe('kiwi');
     expect(scannableItem.unitType).toBe('ounces');
@@ -19,7 +19,7 @@ test('Scannable item can be marked down', () => {
         itemName: 'kiwi',
         unitType: 'ounces',
         price: 1.42
-    }
+    };
     const scannableItem = new ScannableItem(item);
     scannableItem.markDownItem(0.10);
     expect(scannableItem.isMarkedDown).toBe(true);
@@ -31,7 +31,7 @@ test('Scannable item that are marked down can have the mark down removed', () =>
         itemName: 'kiwi',
         unitType: 'ounces',
         price: 1.42
-    }
+    };
     const scannableItem = new ScannableItem(item);
     scannableItem.markDownItem(0.10);
     expect(scannableItem.isMarkedDown).toBe(true);
@@ -46,7 +46,7 @@ test('Marked down items have the correct price calculation', () => {
         itemName: 'kiwi',
         unitType: 'ounces',
         price: 1.42
-    }
+    };
     const scannableItem = new ScannableItem(item);
     scannableItem.markDownItem(0.10);
     expect(scannableItem.calculatePrice()).toEqual(1.32);
@@ -58,7 +58,7 @@ test('Non-marked down items have the correct price calculation', () => {
         itemName: 'kiwi',
         unitType: 'ounces',
         price: 1.42
-    }
+    };
     const scannableItem = new ScannableItem(item);
     expect(scannableItem.calculatePrice()).toEqual(1.42);
     
