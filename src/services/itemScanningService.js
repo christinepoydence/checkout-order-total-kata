@@ -11,7 +11,7 @@ const retrieveItemInformation = (itemName) => {
 };
 
 const modifyItemOnOrder = (itemInformation, itemOnOrder, units) => {
-    if(itemInformation.price !== itemOnOrder.price){
+    if(itemInformation.calculatePrice() !== itemOnOrder.price){
         throw new Error(`The price of the item has changed since the beginning of your order. Please remove all ${itemOnOrder.itemName} from your order and rescan them.`);
     }
     itemOnOrder.units += units;
@@ -21,7 +21,7 @@ const addItemToOrder = (itemInformation, units) => {
     const orderedItem = new OrderedItem({
         itemName: itemInformation.itemName,
         units,
-        price: itemInformation.price
+        price: itemInformation.calculatePrice()
     });
     Order.getInstance().addOrderedItem(orderedItem);
     Order.getInstance().incrementOrderTotal(orderedItem.price, orderedItem.units);
@@ -48,7 +48,7 @@ export const removeItemFromOrder = (itemName, units=1) => {
         }else{
             Order.getInstance().removeOrderedItem(itemName);
         }        
-        Order.getInstance().decrementOrderTotal(itemInformation.price, units);
+        Order.getInstance().decrementOrderTotal(itemInformation.calculatePrice(), units);
     }else{
         throw new Error(`${itemName} is not on the order.`);
     }

@@ -1,4 +1,3 @@
-import {jest} from '@jest/globals';
 import Order from '../classes/order.js';
 import {
     scanItem,
@@ -8,8 +7,8 @@ import {
     addScannableItemToSystem,
     modifyScannableItemInSystem
 } from './itemEntryService.js';
+import { addMarkDownToItem, removeMarkDownFromItem } from "./itemMarkdownService";
 
-jest.mock('../classes/pointOfSale');
 
 describe('scanItem', () => {
 
@@ -18,6 +17,23 @@ describe('scanItem', () => {
         addScannableItemToSystem(baseItem);
         scanItem(baseItem.itemName);
         expect(Order.getInstance().items).toContainEqual({itemName: 'pears', price: 1.69, units:1});
+    });
+
+    test('when a valid, marked-down item is scanned, it is added to the list of scanned items and the price reduction is accounted for in the order', () => {
+        const baseItem = {itemName: 'gingerbread', unitType: 'unit', price: 1.69};
+        addScannableItemToSystem(baseItem);
+        addMarkDownToItem(baseItem.itemName, 0.40);
+        scanItem(baseItem.itemName);
+        expect(Order.getInstance().items).toContainEqual({itemName: 'gingerbread', units: 1, price: 1.29});
+    });
+
+    test('when a valid, marked-down item is scanned, the order total is correctly incremented', () => {
+        Order.getInstance().orderTotal = 0;
+        const baseItem = {itemName: 'ginger snaps', unitType: 'unit', price: 1.69};
+        addScannableItemToSystem(baseItem);
+        addMarkDownToItem(baseItem.itemName, 0.40);
+        scanItem(baseItem.itemName);
+        expect(Order.getInstance().orderTotal).toEqual(1.29);
     });
 
     test('when a valid item is scanned and it is already on the order, the units of the item on the order are incremented', () => {
@@ -104,20 +120,20 @@ describe('removeItemFromOrder', () => {
         addScannableItemToSystem(baseItem);
         scanItem('tootsie rolls',3);
         expect(() => { removeItemFromOrder('tootsie rolls', 4); }
-            ).toThrow(Error( "You have only ordered 3 of this item. You cannot delete 4 units."));
+        ).toThrow(Error( "You have only ordered 3 of this item. You cannot delete 4 units."));
     });
 
     test('if an item not on the order is passed to removeItemFromOrder, an error is thrown', () => {
         Order.getInstance().orderTotal = 3.00;
         const baseItem = {itemName: 'sprite', unitType: 'unit', price: 0.10};
         addScannableItemToSystem(baseItem);
-        expect(() => {removeItemFromOrder('sprite') }
-            ).toThrow(Error(`sprite is not on the order.`));
+        expect(() => {removeItemFromOrder('sprite'); }
+        ).toThrow(Error(`sprite is not on the order.`));
     });
 
     test('if an item that is not scannable is passed to removeItemFromOrder, an error is thrown', () => {
         Order.getInstance().orderTotal = 3.00;
-        expect(() => {removeItemFromOrder('M&Ms') }
-            ).toThrow(Error('M&Ms is not a valid item in this POS system.'));
+        expect(() => {removeItemFromOrder('M&Ms'); }
+        ).toThrow(Error('M&Ms is not a valid item in this POS system.'));
     });
 });
