@@ -42,5 +42,5 @@ npm test
 To see a code coverage report, navigate to the directory that contains the package.json file, and run the command:
 
 ```bash
-npm coverage
+npm run coverage
 ```
