@@ -8,8 +8,10 @@ It solves the Checkout Order Total problem that is defined here: https://github.
 
 In order to run this code, you will need:
 
-  - Version 10 or higher of Node.js (This project was developed using v14.15.0.)
+  - Version 14 or higher of Node.js (This project was developed using v14.16.0.)
   - npm installed (This should be installed automatically as part of the node.js installation.)
+
+  The most recent LTS version of Node.js can be installed from: https://nodejs.org/en/download/
 
 ## Initial Set-up
 
@@ -35,4 +37,10 @@ To run the tests, navigate to the directory that contains the package.json file,
 
 ```bash
 npm test
+```
+
+To see a code coverage report, navigate to the directory that contains the package.json file, and run the command:
+
+```bash
+npm coverage
 ```
