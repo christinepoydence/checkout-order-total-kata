@@ -1,8 +1,8 @@
 # Checkout Order Total Kata
 
-This is my sumbission for the coding test portion of the Accenture interview process.
+This is my submission for the coding test portion of the Accenture interview process.
 
-It solves the Checkout Order Total problem that is defined here: https://github.com/PillarTechnology/kata-checkout-order-total
+It solves the Checkout Order Total Kata that is defined here: https://github.com/PillarTechnology/kata-checkout-order-total
 
 ## Prerequisites
 
@@ -30,6 +30,8 @@ To run the code, navigate to the directory that contains the package.json file, 
 ```bash
 npm start
 ```
+
+Note: This repository only contains the library code- running ```npm start``` will simply execute index.js. I have included some basic examples of how this code could be used in that file.
 
 ## Unit Tests
 
