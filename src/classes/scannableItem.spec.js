@@ -10,4 +10,6 @@ test('ScannableItem can be constructed', () => {
     expect(scannableItem.itemName).toBe('kiwi');
     expect(scannableItem.unitType).toBe('ounces');
     expect(scannableItem.price).toBe(1.42);
+    expect(scannableItem.isMarkedDown).toBe(false);
+    expect(scannableItem.priceReduction).toEqual(0);
 });

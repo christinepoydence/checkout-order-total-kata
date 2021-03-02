@@ -5,6 +5,8 @@ export default class ScannableItem {
         this.itemName = get(item, 'itemName').toLowerCase();
         this.unitType = get(item, 'unitType');
         this.price = +get(item,'price').toFixed(2);
+        this.isMarkedDown = false;
+        this.priceReduction = 0;
     }
 }
 

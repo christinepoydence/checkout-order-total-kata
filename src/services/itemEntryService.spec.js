@@ -11,7 +11,7 @@ describe('addScannableItemToSystem', () => {
     test('when a valid item is passed to addScannableItemToSystem, it is added to the list of scannable items', () => {
         const baseItem = {itemName: 'soup', unitType: 'unit', price: 1.69};
         addScannableItemToSystem(baseItem);
-        expect(PointOfSale.getInstance().scannableItems[0]).toEqual(baseItem);
+        expect(PointOfSale.getInstance().scannableItems[0]).toEqual({...baseItem, isMarkedDown: false, priceReduction: 0});
     });
 
     test('when multiple valid items are passed to addScannableItemToSystem, they are both added to the list of scannable items', () => {
@@ -52,11 +52,11 @@ describe('addScannableItemToSystem', () => {
 describe('modifyScannableItemInSystem', () => {
 
     test('when an existing item is passed to modifyScannableItemInSystem, the item is updated with a new price and unit type', () => {
-        const initialItem = {itemName: "apple", unitType: 'unit', price: 2.04};
+        const initialItem = {itemName: "peach", unitType: 'unit', price: 2.04};
         addScannableItemToSystem(initialItem);
-        const modifiedItem = {itemName: "apple", unitType: 'gallons', price: 2.07};
+        const modifiedItem = {itemName: "peach", unitType: 'gallons', price: 2.07};
         modifyScannableItemInSystem(modifiedItem);
-        expect(PointOfSale.getInstance().scannableItems).toContainEqual(modifiedItem);
+        expect(PointOfSale.getInstance().scannableItems).toContainEqual({...modifiedItem, isMarkedDown: false, priceReduction: 0});
         expect(PointOfSale.getInstance().scannableItems).not.toContainEqual(initialItem);
     });
     
