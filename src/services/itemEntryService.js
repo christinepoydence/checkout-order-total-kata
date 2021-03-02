@@ -1,50 +1,39 @@
-const scannableItems = [];
+import ScannableItem from '../classes/scannableItem.js';
+import PointOfSale from '../classes/pointOfSale.js';
+import get from 'lodash.get';
 
 const scannableItemSchema = {
     itemName: value => typeof value === 'string',
     price: value => typeof value === 'number',
     unitType: value => ['unit', 'pounds', 'ounces', 'gallons', 'quarts', 'pints', 'cups'].includes(value)
-  };
+};
 
-
-  const validateScannableItem = (item) => {
+const validateScannableItemInput = (item) => {
     const entries = Object.entries(scannableItemSchema);
     entries.map(([key, validate]) => {
-      if(!validate(item[key])){
-        throw new Error(`Scannable items must contain a valid ${key}`)
-      }
+        if(!validate(item[key])){
+            throw new Error(`Scannable items must contain a valid ${key}`);
+        }
     });
     return true;
-  };
-
-  const getScannableItemByName = (name) => {
-    return scannableItems.find(item => item.itemName === name);
-  };
-
-const addScannableItemToSystem = (item) => {
-    validateScannableItem(item);
-        const existingItem = getScannableItemByName(item.itemName);
-        if(!!existingItem){
-            throw new Error(`${item.itemName} already exists in the scannable items list. Please modify the item instead of re-adding it.`);
-        }
-        scannableItems.push(item);
-    
 };
 
-const modifyScannableItemInSystem = (item) => {
-    validateScannableItem(item);
-        const index = scannableItems.findIndex((existingItem => existingItem.itemName === item.itemName));
-        if(index === -1){
-            throw new Error(`${item.itemName} is not in the scannable items list. Please add a new item instead of modifying.`)
-        }
-        scannableItems[index].price = item.price;
-        scannableItems[index].unitType = item.unitType;
-    
+export const addScannableItemToSystem = (item) => {
+    validateScannableItemInput(item);
+    const existingItem = PointOfSale.getInstance().retrieveScannableItemByName(item.itemName);
+    if(!!existingItem){
+        throw new Error(`${item.itemName} already exists in the POS system. Please modify the item instead of re-adding it.`);
+    }
+    const scannableItem = new ScannableItem(item);
+    PointOfSale.getInstance().addScannableItem(scannableItem);
 };
 
-module.exports = {
-    scannableItems,
-    addScannableItemToSystem,
-    modifyScannableItemInSystem,
-    getScannableItemByName
-}
+export const modifyScannableItemInSystem = (item) => {
+    validateScannableItemInput(item);
+    const existingItem = PointOfSale.getInstance().retrieveScannableItemByName(get(item, 'itemName'));
+    if(!existingItem){
+        throw new Error(`${item.itemName} is not in the POS system. Please add a new item instead of modifying.`);
+    }
+    existingItem.unitType = item.unitType;
+    existingItem.price = item.price;
+};

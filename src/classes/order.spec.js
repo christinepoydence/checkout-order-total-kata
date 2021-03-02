@@ -20,10 +20,7 @@ test('addOrderedItem adds an item to order.items', () => {
 
 test('removeOrderedItem removes an item from order.items', () => {
     const order = new Order();
-    console.log(order.items)
     order.removeOrderedItem({itemName: 'item1'})
-    console.log(order.items)
-
     expect(order.items).not.toContain('item');
 });
 
