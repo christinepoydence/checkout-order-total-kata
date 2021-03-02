@@ -5,5 +5,5 @@ export default class OrderedItem {
         this.itemName = get(item, 'itemName').toLowerCase();
         this.units = get(item, 'units');
         this.price = +get(item,'price').toFixed(2);
-    }
+    };
 }

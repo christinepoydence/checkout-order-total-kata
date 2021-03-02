@@ -7,7 +7,7 @@ export default class PointOfSale {
         }
         this.scannableItems = [];
         instance = this;
-    }
+    };
 
     addScannableItem(scannableItem) {
         this.scannableItems.push(scannableItem);
@@ -15,9 +15,9 @@ export default class PointOfSale {
 
     retrieveScannableItemByName(itemName) {
         return this.scannableItems.find(item => item.itemName === itemName.toLowerCase());
-    }
+    };
 
     static getInstance() {
         return instance || new PointOfSale();
-    }
+    };
 }

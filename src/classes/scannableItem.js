@@ -7,7 +7,7 @@ export default class ScannableItem {
         this.price = +get(item,'price').toFixed(2);
         this.isMarkedDown = false;
         this.priceReduction = 0;
-    }
+    };
 
     markDownItem(priceReduction) {
         this.isMarkedDown = true;
@@ -17,11 +17,11 @@ export default class ScannableItem {
     removeMarkDown() {
         this.isMarkedDown = false;
         this.priceReduction = 0;
-    }
+    };
 
     calculatePrice() {
         return +(this.price - this.priceReduction).toFixed(2);
-    }
+    };
 
 }
 
