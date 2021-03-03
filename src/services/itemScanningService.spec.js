@@ -50,15 +50,17 @@ describe('scanItem', () => {
         scanItem(baseItem.itemName);
         expect(Order.getInstance().items).toContainEqual({itemName: 'fruit loops', price: 1.69, units:1});
         scanItem(baseItem.itemName, 3);
-        expect(Order.getInstance().items).toContainEqual({itemName: 'fruit loops', price: 1.69, units:4});
+        expect(Order.getInstance().items).toContainEqual({itemName: 'fruit loops', price: 6.76, units:4});
+        expect(Order.getInstance().orderTotal).toEqual(6.76);
     });
 
     test('when a valid item is passed to scanItem and it is already on the order, an error should be thrown if the price has changed', () => {
         scanItem( baseItem.itemName);
         const updatedItem = {...baseItem, price: 1.79};
         modifyScannableItemInSystem(updatedItem);
-        expect(() => { scanItem(baseItem.itemName); }
-        ).toThrow(Error(`The price of the item has changed since the beginning of your order. Please remove all fruit loops from your order and rescan them.`));
+        scanItem(baseItem.itemName);
+        expect(Order.getInstance().items).toContainEqual({"itemName": "fruit loops", "price": 3.58, "units": 2});
+        expect(Order.getInstance().orderTotal).toEqual(3.58);
     });
 
     test('if an item that is not scannable is passed to scanItem, an error is thrown', () => {
@@ -100,7 +102,7 @@ describe('removeItemFromOrder', () => {
         addScannableItemToSystem(baseItem);
         scanItem('turkey',5);
         removeItemFromOrder('turkey', 2);
-        expect(Order.getInstance().items).toContainEqual({itemName: 'turkey', price: 4.90, units: 3});
+        expect(Order.getInstance().items).toContainEqual({itemName: 'turkey', price: 14.70, units: 3});
     });
 
     test('when a valid item is removed, the order total is reduced by the cost of that item', () => {

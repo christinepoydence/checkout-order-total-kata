@@ -11,20 +11,22 @@ const retrieveItemInformation = (itemName) => {
 };
 
 const modifyItemOnOrder = (itemInformation, itemOnOrder, units) => {
-    if(itemInformation.calculatePrice() !== itemOnOrder.price){
-        throw new Error(`The price of the item has changed since the beginning of your order. Please remove all ${itemOnOrder.itemName} from your order and rescan them.`);
-    }
+    const currentPrice = itemOnOrder.price;
+    const newPrice = itemInformation.calculatePrice(itemOnOrder.units + units);
+    Order.getInstance().decrementOrderTotal(currentPrice);
+    Order.getInstance().incrementOrderTotal(newPrice);
     itemOnOrder.units += units;
+    itemOnOrder.price = newPrice;
 };
 
 const addItemToOrder = (itemInformation, units) => {
     const orderedItem = new OrderedItem({
         itemName: itemInformation.itemName,
         units,
-        price: itemInformation.calculatePrice()
+        price: itemInformation.calculatePrice(units)
     });
     Order.getInstance().addOrderedItem(orderedItem);
-    Order.getInstance().incrementOrderTotal(orderedItem.price, orderedItem.units);
+    Order.getInstance().incrementOrderTotal(orderedItem.price);
 };
 
 export const scanItem = (itemName, units=1) => {
@@ -44,11 +46,13 @@ export const removeItemFromOrder = (itemName, units=1) => {
         if(itemOnOrder.units < units){
             throw new Error(`You have only ordered ${itemOnOrder.units} of this item. You cannot delete ${units} units.`);
         }else if(itemOnOrder.units > units){
+            itemOnOrder.price = itemInformation.calculatePrice(itemOnOrder.units - units);
             itemOnOrder.units = itemOnOrder.units - units;
         }else{
             Order.getInstance().removeOrderedItem(itemName);
         }        
-        Order.getInstance().decrementOrderTotal(itemInformation.calculatePrice(), units);
+        const priceToDecrement = itemInformation.calculatePrice(units);
+        Order.getInstance().decrementOrderTotal(priceToDecrement);
     }else{
         throw new Error(`${itemName} is not on the order.`);
     }
@@ -56,4 +60,4 @@ export const removeItemFromOrder = (itemName, units=1) => {
 
 export const getOrderTotal = () => {
     return Order.getInstance().orderTotal;
-}
+};
