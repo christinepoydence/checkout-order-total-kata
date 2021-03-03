@@ -6,7 +6,7 @@ test('Order can be constructed', () => {
     expect(order.orderTotal).toBe(0);
 });
 
-test('instance of order is used if Order is constructed twice', () => {
+test('original instance of order is used if Order is constructed twice', () => {
     const order = new Order();
     const secondOrder = new Order();
     expect(order).toEqual(secondOrder);
