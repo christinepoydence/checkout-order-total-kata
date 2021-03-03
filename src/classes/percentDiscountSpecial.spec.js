@@ -16,12 +16,12 @@ test('PercentDiscountSpecial can be constructed', () => {
     expect(special.percentageDiscount).toEqual(0.5);
 });
 
-test(' maximumDiscountedItems returns the maximum items that can be discounted by the special', () => {
+test('maximumDiscountedItems returns the maximum items that can be discounted by the special', () => {
     const special = new PercentDiscountSpecial(baseSpecial);
     expect(special.maximumDiscountedItems()).toEqual(2);
 });
 
-test(' maximumDiscountedItems returns an arbitrarily high number when there is no limit', () => {
+test('maximumDiscountedItems returns an arbitrarily high number when there is no limit', () => {
     const special = new PercentDiscountSpecial({...baseSpecial, limit: null});
     expect(special.maximumDiscountedItems()).toEqual(10000);
 });

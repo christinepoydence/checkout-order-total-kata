@@ -1,4 +1,4 @@
-import ScannableItem from "./scannableItem";
+import ScannableItem from "./scannableItem.js";
 
 let instance = null;
 /** Class representing a point of sale system. */
@@ -31,7 +31,7 @@ export default class PointOfSale {
         this.specials.push(special);
     };
 
-     /**
+    /**
      * Retrieve a scannable item from the POS system.
      * @param {String} itemName - the name of the item to retrieve from the POS system
      * @return {ScannableItem} The scannable item with the name {itemName}
@@ -40,7 +40,7 @@ export default class PointOfSale {
         return this.scannableItems.find(item => item.itemName === itemName.toLowerCase());
     };
 
-      /**
+    /**
      * Returns the existing instance of PointOfSale, or creates a new one if instance === null
      */
     static getInstance() {
