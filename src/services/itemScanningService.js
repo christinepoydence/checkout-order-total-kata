@@ -53,3 +53,7 @@ export const removeItemFromOrder = (itemName, units=1) => {
         throw new Error(`${itemName} is not on the order.`);
     }
 };
+
+export const getOrderTotal = () => {
+    return Order.getInstance().orderTotal;
+}

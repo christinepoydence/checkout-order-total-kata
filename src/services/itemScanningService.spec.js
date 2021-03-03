@@ -1,7 +1,8 @@
 import Order from '../classes/order.js';
 import {
     scanItem,
-    removeItemFromOrder
+    removeItemFromOrder,
+    getOrderTotal
 } from './itemScanningService.js';
 import {
     addScannableItemToSystem,
@@ -136,4 +137,20 @@ describe('removeItemFromOrder', () => {
         expect(() => {removeItemFromOrder('M&Ms'); }
         ).toThrow(Error('M&Ms is not a valid item in this POS system.'));
     });
+});
+
+describe('getOrderTotal', () => {
+
+    beforeEach(() => {
+        Order.getInstance().items = [];
+        Order.getInstance().orderTotal = 0;
+        PointOfSale.getInstance().scannableItems = [];
+        addScannableItemToSystem(baseItem);
+        scanItem(baseItem.itemName, 3);
+    });
+
+    test('when a valid item is scanned, getOrderTotal correctly calculates the orderTotal', () => {
+        expect(getOrderTotal()).toEqual(5.07);
+    });
+
 });
