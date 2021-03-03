@@ -53,11 +53,22 @@ export default class ScannableItem {
     };
 
     /**
-     * calculate the price, inclusive of the full price and the markdown price
+     * calculate the price for a given number of units, inclusive of the full price, specials, and the markdown price
+     * @param {Number} units - The number of units in the order that we are calculating the price of
      */
-    calculatePrice() {
-        return +(this.price - this.priceReduction).toFixed(2);
+    calculatePrice(units) {
+        if(!this.isOnSpecial && !this.isMarkedDown){
+            return +(this.price*units).toFixed(2);
+        }else if(this.isOnSpecial && !this.isMarkedDown){
+            return +((this.price*units) - this.special.calculateDiscount(units, this.price)).toFixed(2);
+        }else if(!this.isOnSpecial && this.isMarkedDown){
+            return +((this.price - this.priceReduction)*units).toFixed(2);
+        }else{
+            const specialDiscount = this.special.calculateDiscount(units, this.price);
+            const markdownDiscount = this.priceReduction*units;
+            //If there is both a special and a markdown in effect for an item, use the value that will give the customer the better price
+            return specialDiscount > markdownDiscount ?  +((this.price*units) - this.special.calculateDiscount(units, this.price)).toFixed(2) : +((this.price - this.priceReduction)*units).toFixed(2);
+        }
     };
-
 }
 

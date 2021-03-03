@@ -32,7 +32,7 @@ describe('addMarkDownToItem', () => {
         const priceReduction = 0.50;
         addMarkDownToItem(baseItem.itemName, 0.50);
         const expectedFinalPrice = baseItem.price - priceReduction;
-        expect(PointOfSale.getInstance().retrieveScannableItemByName(baseItem.itemName).calculatePrice()).toEqual(expectedFinalPrice);
+        expect(PointOfSale.getInstance().retrieveScannableItemByName(baseItem.itemName).calculatePrice(1)).toEqual(expectedFinalPrice);
     });
 
     test('an error is thrown when the item to be marked down does not exist in the POS system', () => {
@@ -69,7 +69,7 @@ describe('removeMarkDownFromItem', () => {
 
     test('when a valid item is passed, calculatePrice() returns the base price with no markdowns', () => {
         removeMarkDownFromItem(baseItem.itemName);
-        expect(PointOfSale.getInstance().retrieveScannableItemByName(baseItem.itemName).calculatePrice()).toEqual(baseItem.price);
+        expect(PointOfSale.getInstance().retrieveScannableItemByName(baseItem.itemName).calculatePrice(1)).toEqual(baseItem.price);
     });
 
     test('an error is thrown when the item to remove a markdown from does not exist in the POS system', () => {
