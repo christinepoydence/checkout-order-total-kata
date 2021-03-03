@@ -6,6 +6,9 @@ import {
 } from './services/itemEntryService.js';
 import { addMarkDownToItem} from './services/itemMarkdownService.js';
 import {scanItem, getOrderTotal} from './services/itemScanningService.js';
+import PercentDiscountSpecial from './classes/percentDiscountSpecial.js';
+import FlatRateSpecial from './classes/flatRateSpecial.js';
+
 
 /** 
  * Note: This project ONLY implements the library code. 
@@ -39,7 +42,7 @@ const item3 = {
 const item4 = {
     itemName: 'tomatoes',
     unitType: 'pounds',
-    price: 0.95
+    price: 1.00
 };
 
 const item5 = {
@@ -75,3 +78,41 @@ scanItem('soup', 2);
 
 //Print out the running order total
 console.log(`After adding 2 units of soup, the running order total is ${getOrderTotal()}.`); //Should be $3.83 after adding the rye bread at $1.29 and 2 units of soup at $1.27.
+
+//Create a new percent discount special
+const percentDiscountSpecialInput = {
+    name: 'buy 2 get 1 50% off, limit 6',
+    limit: 6,
+    quantityNeededToTriggerSpecial: 2,
+    quantityDiscounted: 1,
+    percentageDiscount: 0.5
+};
+
+const percentDiscountSpecial = new PercentDiscountSpecial(percentDiscountSpecialInput);
+
+//Add the special to an item
+PointOfSale.getInstance().retrieveScannableItemByName('tomatoes').addSpecialToItem(percentDiscountSpecial);
+
+//Add 6 poinds of tomatoes to the order. 
+scanItem('tomatoes', 6);
+
+//Print out the running order total
+console.log(`After adding 6 pounds of tomatoes, the running order total is ${getOrderTotal()}.`); //Should be $8.83 after adding the tomatoes on special at $5 for 6 pounds
+
+//Create a flat rate discount special
+const flatRateSpecialInput = {
+    name: '2 for $5.00',
+    numberOfItems: 2,
+    flatRate: 5.00
+};
+
+const flatRateSpecial = new FlatRateSpecial(flatRateSpecialInput);
+
+//Add the special to an item
+PointOfSale.getInstance().retrieveScannableItemByName('hot chocolate').addSpecialToItem(flatRateSpecial);
+
+//Add 3 hot chocolates to the order
+scanItem('hot chocolate', 3);
+
+//Print out the running order total
+console.log(`After adding 3 hot chocolates, the running order total is ${getOrderTotal()}.`); //Should be $16.82 after adding 3 hot chocolates on special at $5 for 2 or $2.99 each
