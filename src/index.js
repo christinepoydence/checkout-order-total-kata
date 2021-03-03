@@ -1,5 +1,5 @@
 import PointOfSale from './classes/pointOfSale.js';
-import Order from './classes/order.js'
+import Order from './classes/order.js';
 import {
     addScannableItemToSystem, 
     modifyScannableItemInSystem
@@ -68,10 +68,10 @@ const order = new Order();
 scanItem('rye bread');
 
 //Print out the running order total
-console.log(`After adding rye bread, the order total is ${getOrderTotal()}.`) //Should be $1.29 after the base price of 1.79 and the markdown of $0.50.
+console.log(`After adding rye bread, the order total is ${getOrderTotal()}.`); //Should be $1.29 after the base price of 1.79 and the markdown of $0.50.
 
 //Add two units of another item to the order 
 scanItem('soup', 2);
 
 //Print out the running order total
-console.log(`After adding 2 units of soup, the running order total is ${getOrderTotal()}.`) //Should be $3.83 after adding the rye bread at $1.29 and 2 units of soup at $1.27.
+console.log(`After adding 2 units of soup, the running order total is ${getOrderTotal()}.`); //Should be $3.83 after adding the rye bread at $1.29 and 2 units of soup at $1.27.

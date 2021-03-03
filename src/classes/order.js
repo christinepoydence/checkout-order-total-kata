@@ -56,7 +56,7 @@ export default class Order {
     };
 
     /**
-     * Returns the existing instance of Order, or creates a new one if instance === nul
+     * Returns the existing instance of Order, or creates a new one if instance === null
      */
     static getInstance() {
         return instance || new Order();
