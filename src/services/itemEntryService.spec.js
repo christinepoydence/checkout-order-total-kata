@@ -5,84 +5,100 @@ import {
     modifyScannableItemInSystem
 } from './itemEntryService.js';
 
+const baseItem = {
+    itemName: 'soup', 
+    unitType: 'unit', 
+    price: 1.69
+};
+
+const secondItem = {
+    itemName: 'chili', 
+    unitType: 'unit', 
+    price: 2.69
+};
+
 describe('addScannableItemToSystem', () => {
 
-    test('when a valid item is passed to addScannableItemToSystem, it is added to the list of scannable items', () => {
-        const baseItem = {itemName: 'soup', unitType: 'unit', price: 1.69};
+    beforeEach(() => {
+        PointOfSale.getInstance().scannableItems = [];
+        PointOfSale.getInstance().specials = [];
+      });
+
+    test('when a valid, new item is passed, it is added to the list of scannable items', () => {
         addScannableItemToSystem(baseItem);
-        expect(PointOfSale.getInstance().scannableItems[0]).toEqual({...baseItem, isMarkedDown: false, priceReduction: 0, isOnSpecial: false, special: null});
+        expect(PointOfSale.getInstance().scannableItems[0]).toEqual(new ScannableItem(baseItem));
     });
 
-    test('when multiple valid items are passed to addScannableItemToSystem, they are both added to the list of scannable items', () => {
-        const baseItem1 = {itemName: 'chicken noodle soup', unitType: 'unit', price: 1.69};
-        const baseItem2 = {itemName: 'chili', unitType: 'unit', price: 2.69};
-        addScannableItemToSystem(baseItem1);
-        addScannableItemToSystem(baseItem2);
-        expect(PointOfSale.getInstance().scannableItems[1]).toEqual(new ScannableItem(baseItem1));
-        expect(PointOfSale.getInstance().scannableItems[2]).toEqual(new ScannableItem(baseItem2));
+    test('when multiple valid, new items are passed, they are added to the list of scannable items', () => {
+        addScannableItemToSystem(baseItem);
+        addScannableItemToSystem(secondItem);
+        expect(PointOfSale.getInstance().scannableItems[0]).toEqual(new ScannableItem(baseItem));
+        expect(PointOfSale.getInstance().scannableItems[1]).toEqual(new ScannableItem(secondItem));
     });
 
-    test('when an item is passed to addScannableItemToSystem, it must contain a price', () => {
+    test('when a new item is passed, it must contain a price', () => {
         const item = {itemName: "alphabet soup", unitType: 'unit'};
         expect(() => { addScannableItemToSystem(item); }
         ).toThrow(Error('Scannable items must contain a valid price'));
     });
 
-    test('when an item is passed to addScannableItemToSystem, it must contain an item name', () => {
+    test('when a new item is passed, it must contain an item name', () => {
         const item = {price: 1.89, unitType: 'pounds'};
         expect(() => { addScannableItemToSystem(item); }
         ).toThrow(Error('Scannable items must contain a valid itemName'));
     });
 
-    test('when an item is passed to addScannableItemToSystem, it must contain a valid unit type', () => {
+    test('when a new item is passed, it must contain a valid unit type', () => {
         const item = {itemName: 'bananas', price: 2.38};
         expect(() => { addScannableItemToSystem(item); }
         ).toThrow(Error('Scannable items must contain a valid unitType'));
     });
 
     test('duplicate items cannot be added to the list of scannable items', () => {
-        const baseItem = {itemName: 'beets', unitType: 'unit', price: 1.69};
         addScannableItemToSystem(baseItem);
         expect(() => { addScannableItemToSystem(baseItem); }
-        ).toThrow(Error(`beets already exists in the POS system. Please modify the item instead of re-adding it.`));
+        ).toThrow(Error(`soup already exists in the POS system. Please modify the item instead of re-adding it.`));
     });
 });
 
 describe('modifyScannableItemInSystem', () => {
+    
+    beforeEach(() => {
+        PointOfSale.getInstance().scannableItems = [];
+        PointOfSale.getInstance().specials = [];
+      });
 
-    test('when an existing item is passed to modifyScannableItemInSystem, the item is updated with a new price and unit type', () => {
-        const initialItem = {itemName: "peach", unitType: 'unit', price: 2.04};
-        addScannableItemToSystem(initialItem);
-        const modifiedItem = {itemName: "peach", unitType: 'gallons', price: 2.07};
+    test('when a valid, existing item is passed, the item is updated with a new price and unit type', () => {
+        addScannableItemToSystem(baseItem);
+        expect(PointOfSale.getInstance().scannableItems).toContainEqual(new ScannableItem(baseItem));
+
+        const modifiedItem = {...baseItem, price: 3.42};
         modifyScannableItemInSystem(modifiedItem);
-        expect(PointOfSale.getInstance().scannableItems).toContainEqual({...modifiedItem, isMarkedDown: false, priceReduction: 0, isOnSpecial: false, special: null});
-        expect(PointOfSale.getInstance().scannableItems).not.toContainEqual(initialItem);
+        expect(PointOfSale.getInstance().scannableItems).toContainEqual(new ScannableItem(modifiedItem));
+        expect(PointOfSale.getInstance().scannableItems).not.toContainEqual(new ScannableItem(baseItem));
     });
     
-    test('when a new item is passed to modifyScannableItemInSystem, an error should be thrown', () => {
-        const item = {itemName: "cereal", unitType: 'pounds', price: 2.04};
-        expect(() => { modifyScannableItemInSystem(item); }
-        ).toThrow(Error(`${item.itemName} is not in the POS system. Please add a new item instead of modifying.`));
+    test('when a new item is passed, an error should be thrown', () => {
+        expect(() => { modifyScannableItemInSystem(baseItem); }
+        ).toThrow(Error(`${baseItem.itemName} is not in the POS system. Please add a new item instead of modifying.`));
     });
 
-    test('when an item is passed to modifyScannableItemInSystem, it must contain a price', () => {
-        const baseItem = {itemName: 'cashews', unitType: 'unit', price: 1.69};
+    test('when an item is passed, it must contain a price', () => {
         addScannableItemToSystem(baseItem);
-        const item = {itemName: "cashews", unitType: 'unit'};
-        expect(() => { modifyScannableItemInSystem(item); }
+        const modifiedItem = {itemName: "soup", unitType: 'unit'};
+        expect(() => { modifyScannableItemInSystem(modifiedItem); }
         ).toThrow(Error('Scannable items must contain a valid price'));
     });
 
-    test('when an item is passed to modifyScannableItemInSystem, it must contain an item name', () => {
+    test('when an item is passed, it must contain an item name', () => {
         const item = {price: 1.89, unitType: 'pounds'};
         expect(() => { modifyScannableItemInSystem(item); }
         ).toThrow(Error('Scannable items must contain a valid itemName'));
     });
 
-    test('when an item is passed to modifyScannableItemInSystem, it must contain a valid unit type', () => {
-        const baseItem = {itemName: 'bananas', unitType: 'unit', price: 1.69};
+    test('when an item is passed, it must contain a valid unit type', () => {
         addScannableItemToSystem(baseItem);
-        const item = {itemName: 'bananas', price: 2.38};
+        const item = {itemName: 'soup', price: 2.38};
         expect(() => { modifyScannableItemInSystem(item); }
         ).toThrow(Error('Scannable items must contain a valid unitType'));
     });
