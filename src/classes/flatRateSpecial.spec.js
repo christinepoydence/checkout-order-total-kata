@@ -12,10 +12,23 @@ test('FlatRateSpecial can be constructed', () => {
     expect(special.flatRate).toEqual(5.00);
 });
 
-
 test('calculateDiscount returns the discount given a number of units to purchase and a base price', () => {
     const special = new FlatRateSpecial(baseSpecial);
     const numberOfUnits = 6;
     const basePrice = 3.00;
     expect(special.calculateDiscount(numberOfUnits, basePrice)).toEqual(3);
+});
+
+test('calculateDiscount returns the discount given a number of units to purchase and a base price when there are leftover items', () => {
+    const special = new FlatRateSpecial(baseSpecial);
+    const numberOfUnits = 7;
+    const basePrice = 3.00;
+    expect(special.calculateDiscount(numberOfUnits, basePrice)).toEqual(3);
+});
+
+test('calculateDiscount returns thea discount of 0 if no items are ordered', () => {
+    const special = new FlatRateSpecial(baseSpecial);
+    const numberOfUnits = 0;
+    const basePrice = 3.00;
+    expect(special.calculateDiscount(numberOfUnits, basePrice)).toEqual(0);
 });

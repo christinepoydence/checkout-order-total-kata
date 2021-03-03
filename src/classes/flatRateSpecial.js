@@ -9,7 +9,7 @@ export default class FlatRateSpecial {
         this.numberOfItems = special.numberOfItems;
         this.flatRate = special.flatRate;
     };
-    
+
     /**
      * Calculate the amount of money that the special will save given a base price and the number of units to purchase
      * @param {Number} unitsOfItem - number of units of the item to purchase
