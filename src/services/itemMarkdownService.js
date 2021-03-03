@@ -4,14 +4,17 @@ import PointOfSale from '../classes/pointOfSale.js';
  * Adds a markdown to a scannable item
  * @param  {String} itemName       the name of the scannable item
  * @param  {Number} priceReduction the amount to reduce the price by while the item is on markdown
- * @throws {error}                 if itemName is not a valid scannableItem
+ * @throws {error}                 if itemName is not a valid scannableItem or if price reduction is not a number
  */
 export const addMarkDownToItem = (itemName, priceReduction) => {
     const itemToMarkdown = PointOfSale.getInstance().retrieveScannableItemByName(itemName);
     if(!itemToMarkdown){
         throw new Error(`${itemName} must be added to the POS system before it can be marked down.`);
     }
-    itemToMarkdown.markDownItem(priceReduction);
+    if(!Number(priceReduction)){
+        throw new Error('priceReduction must be a number.');
+    }
+    itemToMarkdown.markDownItem(Number(priceReduction));
 };
 
 /**
