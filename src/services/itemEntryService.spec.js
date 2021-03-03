@@ -1,4 +1,3 @@
-import {jest} from '@jest/globals';
 import PointOfSale from '../classes/pointOfSale.js';
 import ScannableItem from '../classes/scannableItem.js';
 import {
@@ -11,7 +10,7 @@ describe('addScannableItemToSystem', () => {
     test('when a valid item is passed to addScannableItemToSystem, it is added to the list of scannable items', () => {
         const baseItem = {itemName: 'soup', unitType: 'unit', price: 1.69};
         addScannableItemToSystem(baseItem);
-        expect(PointOfSale.getInstance().scannableItems[0]).toEqual({...baseItem, isMarkedDown: false, priceReduction: 0});
+        expect(PointOfSale.getInstance().scannableItems[0]).toEqual({...baseItem, isMarkedDown: false, priceReduction: 0, isOnSpecial: false, special: null});
     });
 
     test('when multiple valid items are passed to addScannableItemToSystem, they are both added to the list of scannable items', () => {
@@ -56,7 +55,7 @@ describe('modifyScannableItemInSystem', () => {
         addScannableItemToSystem(initialItem);
         const modifiedItem = {itemName: "peach", unitType: 'gallons', price: 2.07};
         modifyScannableItemInSystem(modifiedItem);
-        expect(PointOfSale.getInstance().scannableItems).toContainEqual({...modifiedItem, isMarkedDown: false, priceReduction: 0});
+        expect(PointOfSale.getInstance().scannableItems).toContainEqual({...modifiedItem, isMarkedDown: false, priceReduction: 0, isOnSpecial: false, special: null});
         expect(PointOfSale.getInstance().scannableItems).not.toContainEqual(initialItem);
     });
     

@@ -14,6 +14,33 @@ test('ScannableItem can be constructed', () => {
     expect(scannableItem.priceReduction).toEqual(0);
 });
 
+test('Scannable item can be on special', () => {
+    const item = {
+        itemName: 'kiwi',
+        unitType: 'ounces',
+        price: 1.42
+    };
+    const scannableItem = new ScannableItem(item);
+    scannableItem.addSpecialToItem('special');
+    expect(scannableItem.isOnSpecial).toBe(true);
+    expect(scannableItem.special).toEqual('special');
+});
+
+test('Scannable item can be taken off special', () => {
+    const item = {
+        itemName: 'kiwi',
+        unitType: 'ounces',
+        price: 1.42
+    };
+    const scannableItem = new ScannableItem(item);
+    scannableItem.addSpecialToItem('special');
+    expect(scannableItem.isOnSpecial).toBe(true);
+    expect(scannableItem.special).toEqual('special');
+    scannableItem.removeSpecialFromItem();
+    expect(scannableItem.isOnSpecial).toBe(false);
+    expect(scannableItem.special).toEqual(null);
+});
+
 test('Scannable item can be marked down', () => {
     const item = {
         itemName: 'kiwi',

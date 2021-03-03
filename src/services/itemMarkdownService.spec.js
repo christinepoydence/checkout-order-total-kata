@@ -10,14 +10,14 @@ describe('addMarkDownToItem', () => {
         const baseItem = {itemName: 'fruit loops', unitType: 'unit', price: 1.69};
         addScannableItemToSystem(baseItem);
         addMarkDownToItem(baseItem.itemName, 0.50);
-        expect(PointOfSale.getInstance().retrieveScannableItemByName(baseItem.itemName)).toEqual({...baseItem, isMarkedDown: true, priceReduction: 0.50});
+        expect(PointOfSale.getInstance().retrieveScannableItemByName(baseItem.itemName)).toEqual({...baseItem, isMarkedDown: true, priceReduction: 0.50, isOnSpecial: false, special: null});
         expect(PointOfSale.getInstance().retrieveScannableItemByName(baseItem.itemName).calculatePrice()).toEqual(1.19);
     });
 
     test('when a valid item is passed to removeMarkDownFromItem, the item is marked as full price', () => {
         const baseItem = {itemName: 'fruit loops', unitType: 'unit', price: 1.69};
         removeMarkDownFromItem(baseItem.itemName);
-        expect(PointOfSale.getInstance().retrieveScannableItemByName(baseItem.itemName)).toEqual({...baseItem, isMarkedDown: false, priceReduction: 0});
+        expect(PointOfSale.getInstance().retrieveScannableItemByName(baseItem.itemName)).toEqual({...baseItem, isMarkedDown: false, priceReduction: 0, isOnSpecial: false, special: null});
         expect(PointOfSale.getInstance().retrieveScannableItemByName(baseItem.itemName).calculatePrice()).toEqual(1.69);
     });
 

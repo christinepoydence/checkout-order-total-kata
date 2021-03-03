@@ -7,7 +7,19 @@ export default class ScannableItem {
         this.price = +get(item,'price').toFixed(2);
         this.isMarkedDown = false;
         this.priceReduction = 0;
+        this.isOnSpecial = false;
+        this.special = null;
     };
+
+    addSpecialToItem(special) {
+        this.isOnSpecial = true;
+        this.special = special;
+    }
+
+    removeSpecialFromItem(special) {
+        this.isOnSpecial = false;
+        this.special = null;
+    }
 
     markDownItem(priceReduction) {
         this.isMarkedDown = true;
