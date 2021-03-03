@@ -35,13 +35,13 @@ test('retrieveOrderedItemByName returns an item from order.items', () => {
 
 test('incrementOrderTotal increases the order total', () => {
     const order = new Order();
-    order.incrementOrderTotal(1.2,4);
-    expect(order.orderTotal).toEqual(4.8);
+    order.incrementOrderTotal(1.2);
+    expect(order.orderTotal).toEqual(1.2);
 });
 
 test('decrementOrderTotal decreases the order total', () => {
     const order = new Order();
-    order.decrementOrderTotal(1.2,4);
+    order.decrementOrderTotal(1.2);
     expect(order.orderTotal).toEqual(0);
 });
 

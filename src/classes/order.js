@@ -40,21 +40,19 @@ export default class Order {
     };
 
     /**
-     * Increments the orderTotal by multiplying the price per unit and the number of units
-     * @param {Number} pricePerUnit - The cost of one unit of the orderedItem
-     * @param {Number} units - The number of units ordered.
+     * Increments the orderTotal by a given amount
+     * @param {Number} price - The cost of the orderedItem
      */
-    incrementOrderTotal(pricePerUnit, units) {
-        this.orderTotal += +(pricePerUnit*units).toFixed(2);
+    incrementOrderTotal(price) {
+        this.orderTotal += +price.toFixed(2);
     };
 
     /**
-     * Decrements the orderTotal by multiplying the price per unit and the number of units
-     * @param {Number} pricePerUnit - The cost of one unit of the orderedItem
-     * @param {Number} units - The number of units ordered.
+     * Decrements the orderTotal by a given amount
+     * @param {Number} price - The cost of the orderedItem
      */
-    decrementOrderTotal(pricePerUnit, units) {
-        this.orderTotal -= +(pricePerUnit*units).toFixed(2);
+    decrementOrderTotal(price) {
+        this.orderTotal -= +price.toFixed(2);
     };
 
     /**
