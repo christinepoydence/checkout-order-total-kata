@@ -26,7 +26,7 @@ describe('scanItem', () => {
         Order.getInstance().orderTotal = 0;
         PointOfSale.getInstance().scannableItems = [];
         addScannableItemToSystem(baseItem);
-      });
+    });
 
     test('when a valid item is scanned, it is added to the list of scanned items', () => {
         scanItem(baseItem.itemName);
@@ -86,8 +86,8 @@ describe('removeItemFromOrder', () => {
         Order.getInstance().orderTotal = 0;
         PointOfSale.getInstance().scannableItems = [];
         addScannableItemToSystem(baseItem);
-        scanItem(baseItem.itemName)
-      });
+        scanItem(baseItem.itemName);
+    });
 
     test('when a valid item is removed, it is removed from the list of items on the order', () => {
         removeItemFromOrder(baseItem.itemName);

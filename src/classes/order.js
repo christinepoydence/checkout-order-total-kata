@@ -22,7 +22,7 @@ export default class Order {
         this.items.push(orderedItem);
     };
 
-     /**
+    /**
      * Removes a grocery item from the list of items on Order
      * @param {String} itemName - The name of the item to be removed from the order.
      */
@@ -39,7 +39,7 @@ export default class Order {
         return this.items.find(item => item.itemName === itemName.toLowerCase());
     };
 
-     /**
+    /**
      * Increments the orderTotal by multiplying the price per unit and the number of units
      * @param {Number} pricePerUnit - The cost of one unit of the orderedItem
      * @param {Number} units - The number of units ordered.

@@ -22,7 +22,7 @@ describe('addScannableItemToSystem', () => {
     beforeEach(() => {
         PointOfSale.getInstance().scannableItems = [];
         PointOfSale.getInstance().specials = [];
-      });
+    });
 
     test('when a valid, new item is passed, it is added to the list of scannable items', () => {
         addScannableItemToSystem(baseItem);
@@ -66,7 +66,7 @@ describe('modifyScannableItemInSystem', () => {
     beforeEach(() => {
         PointOfSale.getInstance().scannableItems = [];
         PointOfSale.getInstance().specials = [];
-      });
+    });
 
     test('when a valid, existing item is passed, the item is updated with a new price and unit type', () => {
         addScannableItemToSystem(baseItem);

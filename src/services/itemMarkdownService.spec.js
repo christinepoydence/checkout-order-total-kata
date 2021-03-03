@@ -16,7 +16,7 @@ describe('addMarkDownToItem', () => {
         PointOfSale.getInstance().scannableItems = [];
         PointOfSale.getInstance().specials = [];
         addScannableItemToSystem(baseItem);
-      });
+    });
 
     test('when a valid item is marked down, the isMarkedDown flag is set to true', () => {
         addMarkDownToItem(baseItem.itemName, 0.50);
@@ -55,7 +55,7 @@ describe('removeMarkDownFromItem', () => {
         PointOfSale.getInstance().specials = [];
         addScannableItemToSystem(baseItem);
         addMarkDownToItem(baseItem.itemName, 0.50);
-      });
+    });
 
     test('when a valid item is passed, the isMarkedDown flag is set to false', () => {
         removeMarkDownFromItem(baseItem.itemName);
@@ -73,8 +73,8 @@ describe('removeMarkDownFromItem', () => {
     });
 
     test('an error is thrown when the item to remove a markdown from does not exist in the POS system', () => {
-      expect(() => { removeMarkDownFromItem('not a real item'); }
-      ).toThrow(Error('not a real item must be added to the POS system before a markdown can be removed.'));
+        expect(() => { removeMarkDownFromItem('not a real item'); }
+        ).toThrow(Error('not a real item must be added to the POS system before a markdown can be removed.'));
     });
    
 });
