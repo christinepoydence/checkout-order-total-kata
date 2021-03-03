@@ -8,6 +8,11 @@ const scannableItemSchema = {
     unitType: value => ['unit', 'pounds', 'ounces', 'gallons', 'quarts', 'pints', 'cups'].includes(value)
 };
 
+/**
+ * Validates that the scannable item input is correctly formatted
+ * @param  {Object} item Object that contains the scannable item's name, price, and unit type.
+ * @throws {error}       If a property of the scannable item is not valid.
+ */
 const validateScannableItemInput = (item) => {
     const entries = Object.entries(scannableItemSchema);
     entries.map(([key, validate]) => {
@@ -15,9 +20,13 @@ const validateScannableItemInput = (item) => {
             throw new Error(`Scannable items must contain a valid ${key}`);
         }
     });
-    return true;
 };
 
+/**
+ * Validates and adds a new item to the Point of Sale System.
+ * @param  {Object} item Object that contains the scannable item's name, price, and unit type.
+ * @throws {error}       If the item already exists in the Point of Sale system.
+ */
 export const addScannableItemToSystem = (item) => {
     validateScannableItemInput(item);
     const existingItem = PointOfSale.getInstance().retrieveScannableItemByName(item.itemName);
@@ -28,6 +37,11 @@ export const addScannableItemToSystem = (item) => {
     PointOfSale.getInstance().addScannableItem(scannableItem);
 };
 
+/**
+ * Validates and modifies an existing item in the Point of Sale System.
+ * @param  {Object} item Object that contains the scannable item's name, price, and unit type.
+ * @throws {error}       If the item does not already exist in the Point of Sale system.
+ */
 export const modifyScannableItemInSystem = (item) => {
     validateScannableItemInput(item);
     const existingItem = PointOfSale.getInstance().retrieveScannableItemByName(get(item, 'itemName'));
