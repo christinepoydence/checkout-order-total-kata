@@ -17,6 +17,12 @@ test('addScannableItem adds an item to pos.scannableItems', () => {
     expect(pos.scannableItems).toContainEqual({itemName: 'item'});
 });
 
+test('addSpecial adds a special to pos.specials', () => {
+    const pos = new PointOfSale();
+    pos.addSpecial({specialName: 'special'});
+    expect(pos.specials).toContainEqual({specialName: 'special'});
+});
+
 test('retrieveScannableItemByName returns an item with the name that is passed from scannable items', () => {
     const pos = new PointOfSale();
     const retrievedItem = pos.retrieveScannableItemByName('item');

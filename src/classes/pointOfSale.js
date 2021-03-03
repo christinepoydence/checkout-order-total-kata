@@ -6,11 +6,16 @@ export default class PointOfSale {
             return instance;
         }
         this.scannableItems = [];
+        this.specials = [];
         instance = this;
     };
 
     addScannableItem(scannableItem) {
         this.scannableItems.push(scannableItem);
+    };
+
+    addSpecial(special) {
+        this.specials.push(special);
     };
 
     retrieveScannableItemByName(itemName) {
